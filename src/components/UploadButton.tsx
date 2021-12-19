@@ -10,12 +10,12 @@ export default function UploadButton(props: any) {
       <input
         accept="image/*"
         id={"contained-button-file" + props.id}
-        multiple
         type="file"
         hidden
         onChange={(e) => {
-          props.onchange(e, props.name, props.index);
+          props.onchange(e);
         }}
+        name={props.name}
       />
       {props.fileUploaded ? (
         <CustomizedButtons

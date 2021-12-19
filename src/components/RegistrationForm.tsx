@@ -23,44 +23,38 @@ import CustomRadioButton from "../commoncomponents/RadioButton";
 import CustomizedButtons from "../commoncomponents/Button";
 // import { connect } from "react-redux";
 
-const plotNumbers = ["17-A", "17-B", "16-C", "16-D"];
+// const plotNumbers = ["17-A", "17-B", "16-C", "16-D"];
+
+const applicant = {
+  fName: "",
+  mName: "",
+  lName: "",
+  aadharFile: "",
+  panFile: "",
+  aadharName: "",
+  panName: "",
+};
 
 const plots = [
   {
     label: "17-A",
-    value: "17-a",
-    applicants: {
-      primary: [
-        {
-          fName: "",
-          mName: "",
-          lName: "",
-          aadharFile: "",
-          panFile: "",
-        },
-      ],
-      secondary: [
-        {
-          fName: "",
-          mName: "",
-          lName: "",
-          aadharFile: "",
-          panFile: "",
-        },
-      ],
-    },
+    value: "17-A",
+    applicants: [{ ...applicant }],
   },
   {
     label: "17-B",
-    value: "17-b",
+    value: "17-B",
+    applicants: [{ ...applicant }],
   },
   {
     label: "16-C",
-    value: "16-a",
+    value: "16-C",
+    applicants: [{ ...applicant }],
   },
   {
     label: "16-D",
-    value: "16-d",
+    value: "16-D",
+    applicants: [{ ...applicant }],
   },
 ];
 
@@ -72,6 +66,7 @@ const TabStyleWrapper = styled("div")(() => ({
     padding: 0,
   },
 }));
+
 export default class RegistrationForm extends Component<any, any> {
   constructor(props: any) {
     super(props);
@@ -82,208 +77,184 @@ export default class RegistrationForm extends Component<any, any> {
         an: 122345678,
         plotNum: "7A-3",
       },
-      ischecked: "17-A",
-      addApplicant: false,
-      plotWithApplicants: [
-        {
-          pltNumner: "17-A",
-          pltId: 1,
-          applicants: [
-            {
-              id: 1,
-              title: "Primary Applicant",
-              Fname: "",
-              Mname: "",
-              Lname: "",
-              adhar: {
-                name: "",
-                link: "",
-              },
-              pan: {
-                name: "",
-                link: "",
-              },
-              isAdharUploaded: false,
-              isPanUploaded: false,
-              isAdharDisplayed: false,
-              isPanDisplayed: false,
-            },
-            {
-              id: 2,
-              title: "Secondary Applicant",
-              Fname: "",
-              Mname: "",
-              Lname: "",
-              adhar: {
-                name: "",
-                link: "",
-              },
-              pan: {
-                name: "",
-                link: "",
-              },
-              isFileUploaded: false,
-              isAdharDisplayed: false,
-              isPanDisplayed: false,
-            },
-          ],
-        },
-        {
-          pltNumner: "",
-          applicants: [],
-        },
-      ],
+      currentPlotValue: "17-A",
+      plots,
     };
   }
-  setApplicantData = (id: any, Applicant: any, pltId: any) => {
-    console.log("setApplicantData");
-    const plotWithApplicants = this.state.plotWithApplicants[0];
-    const updatedPlotWithApplicants = plotWithApplicants.filter(
-      (plot: any) => plot.pltId === pltId
-    );
-    console.log(updatedPlotWithApplicants, "filterrr");
-    const newState = updatedPlotWithApplicants.applicants.map((appl: any) => {
-      if (appl.id === id) {
+  handleChangeTabNradio = (event: any) => {
+    this.setState({ currentPlotValue: event.target.value });
+  };
+  addAnotherApplicant = () => {
+    const { plots, currentPlotValue } = this.state;
+    let updatePlots: any = [];
+    updatePlots = plots.map((plot: any) => {
+      if (plot.value === currentPlotValue) {
         return {
-          ...Applicant,
+          ...plot,
+          applicants: [...plot.applicants, applicant],
         };
-      }
-      return appl;
-    });
-
-    const updatedData = [
-      {
-        ...plotWithApplicants,
-        applicants: [...updatedPlotWithApplicants.applicants],
-      },
-    ];
-    this.setState({
-      updatedPlotWithApplicants: updatedData,
-    });
-  };
-  handleChange = (event: any) => {
-    this.setState({ ischecked: event.target.value });
-  };
-  addAnotherApplicant = (e: any) => {
-    const plotId = 1;
-    console.log("addAnotherApplicant");
-    const plotWithApplicants: any[] = this.state.plotWithApplicants.filter(
-      (plot: any) => plot.pltId === plotId
-    );
-    const newApplicant = {
-      // id:3,
-      // title: "Third Applicant",
-      applicantName: "",
-      adhar: {
-        name: "",
-        link: "",
-      },
-      pan: {
-        name: "",
-        link: "",
-      },
-      isFileUploaded: false,
-      isAdharDisplayed: false,
-      isPanDisplayed: false,
-    };
-    const applicants: any[] = plotWithApplicants[0].applicants;
-    applicants.push(newApplicant);
-    console.log("addAnotherApplicant", applicants);
-    const updatedPlotWithApplicants: any[] = this.state.plotWithApplicants.map(
-      (plot: any) => {
-        if (plot.pltId === plotId) {
-          return {
-            ...plotWithApplicants[0],
-            applicants: applicants,
-          };
-        }
+      } else {
         return plot;
       }
-    );
-    this.setState({
-      plotWithApplicants: updatedPlotWithApplicants,
     });
+    this.setState({ plots: updatePlots });
+  };
+  filehandler = () => {
+    const { plots, currentPlotValue } = this.state;
+    let updatePlots: any = [];
+    updatePlots = plots.map((plot: any) => {
+      if (plot.value === currentPlotValue) {
+        return {
+          ...plot,
+          applicants: [...plot.applicants, applicant],
+        };
+      } else {
+        return plot;
+      }
+    });
+    this.setState({ plots: updatePlots });
   };
   proceedHandler = (e: any) => {
     this.state.history.push("/regCenter");
   };
+  onChangeInput = (e: any, index: any) => {
+    const { plots, currentPlotValue } = this.state;
+    const { name, value } = e.target;
+    let updatePlots: any = [];
+    updatePlots = plots.map((plot: any) => {
+      if (plot.value === currentPlotValue) {
+        return {
+          ...plot,
+          applicants: [
+            ...plot.applicants.map((applicant: any, apIndex: any) => {
+              if (index === apIndex) {
+                return {
+                  ...applicant,
+                  [name]: value,
+                };
+              } else {
+                return applicant;
+              }
+            }),
+          ],
+        };
+      } else {
+        return plot;
+      }
+    });
+    this.setState({ plots: updatePlots });
+  };
+  onChangeFile = (e: any, index: any) => {
+    const { plots, currentPlotValue } = this.state;
+    const { name, files } = e.target;
+
+    const fileName = files && files[0].name;
+    let fullFile = files && files[0];
+    if (fullFile) {
+      console.log(87997897979);
+      const reader = new FileReader();
+      let attachment: any;
+      reader.onload = (e: any) => {
+        console.log(8799789797900);
+        attachment = e.target.result;
+        if (attachment) {
+          console.log(87997897979001);
+          let updatePlots: any = [];
+          updatePlots = plots.map((plot: any) => {
+            if (plot.value === currentPlotValue) {
+              return {
+                ...plot,
+                applicants: [
+                  ...plot.applicants.map((applicant: any, apIndex: any) => {
+                    if (index === apIndex) {
+                      return {
+                        ...applicant,
+                        [`${name}Name`]: fileName,
+                        [`${name}File`]: attachment,
+                      };
+                    } else {
+                      return applicant;
+                    }
+                  }),
+                ],
+              };
+            } else {
+              return plot;
+            }
+          });
+          this.setState({ plots: updatePlots });
+        }
+      };
+      reader.readAsDataURL(fullFile);
+    }
+  };
+
   render() {
-    // console.log(this.state.plotWithApplicants[0].applicants)
+    console.log(878789797, this.state);
     return (
       <>
         <Header />
         <Title />
         <CustomizedSteppers />
         <ApplicantDetails />
-        <TabContext value={this.state.ischecked}>
+        <TabContext value={this.state.currentPlotValue}>
           <TabStyleWrapper>
-            <TabList onChange={this.handleChange} variant="fullWidth">
+            <TabList onChange={this.handleChangeTabNradio} variant="fullWidth">
               <CustomRadioButton
-                value={this.state.ischecked}
-                onChange={this.handleChange}
+                value={this.state.currentPlotValue}
+                onChange={this.handleChangeTabNradio}
                 legendTitle="Choose the Plot Number and fill in the applicant details for each"
               >
-                {plotNumbers.map((plotNumber) => {
+                {plots.map((plot, index) => {
                   return (
                     <Tab
+                      key={index}
                       disableRipple
                       label={
                         <FormControlLabel
-                          value={plotNumber}
+                          value={plot.value}
                           control={<Radio />}
-                          label={plotNumber}
+                          label={plot.label}
                         />
                       }
-                      value={plotNumber}
+                      value={plot.value}
                     />
                   );
                 })}
               </CustomRadioButton>
             </TabList>
-            <TabPanel value={"17-A"}>
-              <Grid container spacing={2}>
-                {this.state.plotWithApplicants[0].applicants.map(
-                  (applicant: any, index: number) => {
-                    return (
-                      <Grid item xs={6} key={index}>
-                        <Aplicant
-                          setApplicantData={this.setApplicantData}
-                          applicant={applicant}
-                          index={index}
-                          pltId={this.state.plotWithApplicants[0].pltId}
-                        />
-                      </Grid>
-                    );
-                  }
-                )}
-              </Grid>
-            </TabPanel>
-            <TabPanel value={"17-B"}>
-              <Grid container spacing={2}>
-                {this.state.plotWithApplicants[0].applicants.map(
-                  (applicant: any, index: number) => {
-                    return (
-                      <Grid item xs={6} key={index}>
-                        <Aplicant
-                          setApplicantData={this.setApplicantData}
-                          applicant={applicant}
-                          index={index}
-                          pltId={this.state.plotWithApplicants[0].pltId}
-                        />
-                      </Grid>
-                    );
-                  }
-                )}
-              </Grid>
-            </TabPanel>
+            {this.state.plots.map((plot: any, index: any) => {
+              return (
+                <TabPanel value={plot.value} key={index}>
+                  <Grid container spacing={2}>
+                    {plot.applicants.map((applicant: any, index: number) => {
+                      return (
+                        <Grid item xs={6} key={index}>
+                          <Aplicant
+                            onChangeInput={(e: any) =>
+                              this.onChangeInput(e, index)
+                            }
+                            onChangeFile={(e: any) =>
+                              this.onChangeFile(e, index)
+                            }
+                            applicant={
+                              index === 0
+                                ? { ...applicant, title: "Primary Applicant" }
+                                : index === 1
+                                ? { ...applicant, title: "Secondary Applicant" }
+                                : applicant
+                            }
+                            index={index}
+                          />
+                        </Grid>
+                      );
+                    })}
+                  </Grid>
+                </TabPanel>
+              );
+            })}
           </TabStyleWrapper>
         </TabContext>
-        {this.state.addApplicant ? (
-          <Grid container spacing={2}>
-            <Grid item xs={6}></Grid>
-            <Aplicant title="Third Applicant" />
-          </Grid>
-        ) : null}
         <CustomizedButtons
           size="small"
           startIcon={<AddIcon />}
