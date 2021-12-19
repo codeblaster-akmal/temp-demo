@@ -24,9 +24,52 @@ import CustomizedButtons from "../commoncomponents/Button";
 // import { connect } from "react-redux";
 
 const plotNumbers = ["17-A", "17-B", "16-C", "16-D"];
+
+const plots = [
+  {
+    label: "17-A",
+    value: "17-a",
+    applicants: {
+      primary: [
+        {
+          fName: "",
+          mName: "",
+          lName: "",
+          aadharFile: "",
+          panFile: "",
+        },
+      ],
+      secondary: [
+        {
+          fName: "",
+          mName: "",
+          lName: "",
+          aadharFile: "",
+          panFile: "",
+        },
+      ],
+    },
+  },
+  {
+    label: "17-B",
+    value: "17-b",
+  },
+  {
+    label: "16-C",
+    value: "16-a",
+  },
+  {
+    label: "16-D",
+    value: "16-d",
+  },
+];
+
 const TabStyleWrapper = styled("div")(() => ({
   ".MuiTabs-indicator": {
     backgroundColor: "transparent",
+  },
+  ".MuiTabPanel-root": {
+    padding: 0,
   },
 }));
 export default class RegistrationForm extends Component<any, any> {
@@ -122,30 +165,47 @@ export default class RegistrationForm extends Component<any, any> {
     this.setState({ ischecked: event.target.value });
   };
   addAnotherApplicant = (e: any) => {
-    const plotWithApplicants = this.state.plotWithApplicants[0].applicants.push(
-      {
-        // id:1,
-        title: "",
-        Fname: "",
-        Mname: "",
-        Lname: "",
-        adhar: {
-          name: "",
-          link: "",
-        },
-        pan: {
-          name: "",
-          link: "",
-        },
-        isFileUploaded: false,
-        isAdharDisplayed: false,
-        isPanDisplayed: false,
+    const plotId = 1;
+    console.log("addAnotherApplicant");
+    const plotWithApplicants: any[] = this.state.plotWithApplicants.filter(
+      (plot: any) => plot.pltId === plotId
+    );
+    const newApplicant = {
+      // id:3,
+      // title: "Third Applicant",
+      applicantName: "",
+      adhar: {
+        name: "",
+        link: "",
+      },
+      pan: {
+        name: "",
+        link: "",
+      },
+      isFileUploaded: false,
+      isAdharDisplayed: false,
+      isPanDisplayed: false,
+    };
+    const applicants: any[] = plotWithApplicants[0].applicants;
+    applicants.push(newApplicant);
+    console.log("addAnotherApplicant", applicants);
+    const updatedPlotWithApplicants: any[] = this.state.plotWithApplicants.map(
+      (plot: any) => {
+        if (plot.pltId === plotId) {
+          return {
+            ...plotWithApplicants[0],
+            applicants: applicants,
+          };
+        }
+        return plot;
       }
     );
-    this.setState({ plotWithApplicants: plotWithApplicants });
+    this.setState({
+      plotWithApplicants: updatedPlotWithApplicants,
+    });
   };
   proceedHandler = (e: any) => {
-    this.state.history.push("/RegistrationCenters");
+    this.state.history.push("/regCenter");
   };
   render() {
     // console.log(this.state.plotWithApplicants[0].applicants)
@@ -228,7 +288,7 @@ export default class RegistrationForm extends Component<any, any> {
           size="small"
           startIcon={<AddIcon />}
           variant="outlined"
-          onclick={this.addAnotherApplicant}
+          onClick={this.addAnotherApplicant}
         >
           Add another applicant
         </CustomizedButtons>

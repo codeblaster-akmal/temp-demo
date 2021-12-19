@@ -22,7 +22,7 @@ const ButtonWrapper = styled("div")(() => ({
     },
   },
   "& .MuiButton-text": {
-    backgroundColor: "#fff",
+    backgroundColor: "transparent",
     color: colorTheme.outlineColor,
     "&:hover": {
       backgroundColor: "transparent",

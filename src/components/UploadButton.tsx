@@ -18,26 +18,32 @@ export default function UploadButton(props: any) {
         }}
       />
       {props.fileUploaded ? (
-        <Typography
-          marginY={1}
-          component={"div"}
-          fontWeight={600}
-          sx={{ color: colorTheme.primaryLite, cursor: "pointer" }}
-          variant="body2"
-          className="documentTitle"
+        <CustomizedButtons
+          variant="text"
+          component="span"
+          {...props}
         >
-          Adhar Uploaded
           <Typography
-            mx={2}
+            marginY={1}
+            component={"div"}
             fontWeight={600}
-            sx={{ color: colorTheme.primary }}
-            component={"span"}
+            sx={{ color: colorTheme.primaryLite, cursor: "pointer" }}
             variant="body2"
-            className="changeBtn"
+            className="documentTitle"
           >
-            Change
+            Adhar Uploaded
+            <Typography
+              mx={2}
+              fontWeight={600}
+              sx={{ color: colorTheme.primary }}
+              component={"span"}
+              variant="body2"
+              className="changeBtn"
+            >
+              Change
+            </Typography>
           </Typography>
-        </Typography>
+        </CustomizedButtons>
       ) : (
         <CustomizedButtons
           variant="outlined"
