@@ -1,0 +1,13 @@
+.App {
+  margin-left:5%;
+  margin-right: 5%;
+  box-sizing: border-box;
+  max-width: '796px';
+  margin:'auto';
+  width: '100%';
+}
+body {
+  margin-left: 10vw;
+  padding: 0;
+  margin-right:10vw
+}
